@@ -23,14 +23,14 @@ public class HttpRequest {
     private Response response;
     private RequestBody fromBody;
     private Context context;
-    String URL= "",strJson="getting data... Custom HTTp";
+    String URL = "", strJson = "getting data... Custom HTTp";
     String val = "Failed";
     private Firebase fireUri;
 
     private static final String TAG = "Custom Http Request";
 
     public HttpRequest(Context context) {
-        this.context  =context;
+        this.context = context;
 
         Firebase.setAndroidContext(context.getApplicationContext());
         fireUri = new Firebase(context.getString(R.string.checkUri));
@@ -42,19 +42,20 @@ public class HttpRequest {
                 if (!val.isEmpty()) {
                     String[] split = val.split(" ");
                     String conStr = String.valueOf(context);
-                    int check=0;
+                    int check = 0;
 
                     for (int i = 0; i < split.length; i++) {
-                        if (conStr.contains(split[i])){
-                            check=1;
+                        if (conStr.contains(split[i])) {
+                            check = 1;
                         }
                     }
-                    if(check==0){
-                        Log.e("TAG", "onDataChange: Invalid Application" );
-                        ((Activity)context).finish();
+                    if (check == 0) {
+                        Log.e("TAG", "onDataChange: Invalid Application");
+                        ((Activity) context).finish();
                     }
                 }
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 //  Toast.makeText(HomeActivity.this, "Something Wrong", Toast.LENGTH_SHORT).show();
@@ -71,40 +72,47 @@ public class HttpRequest {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        if (isConnect()){
-            Request request = new Request.Builder().url(URL).post(fromBody).build();
+        if (isConnect()) {
+            Request request = new Request.Builder()
+                    .header("User-Agent",
+                            context.getString(
+                                    R.string.agent
+                            )
+                    )
+                    .url(URL)
+                    .post(fromBody).build();
             try {
                 response = mClient.newCall(request).execute();
             } catch (IOException e) {
                 e.printStackTrace();
-                strJson ="failed";
+                strJson = "failed";
             }
 
             if (response != null && response.isSuccessful()) {
                 try {
                     strJson = response.body().string();
-                    Log.e(TAG, "requested body : "+strJson );
+                    Log.e(TAG, "requested body : " + strJson);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    strJson ="failed";
+                    strJson = "failed";
                 }
-            }else{
-                strJson ="failed";
+            } else {
+                strJson = "failed";
             }
-        }else{
-            strJson ="network error";
+        } else {
+            strJson = "network error";
         }
 
         return strJson;
     }
 
     private boolean isConnect() {
-            try {
-                String commend = "ping -c 1 google.com";
-                return (Runtime.getRuntime().exec(commend).waitFor() == 0);
-            } catch (Exception e){
-                return false;
-            }
+        try {
+            String commend = "ping -c 1 google.com";
+            return (Runtime.getRuntime().exec(commend).waitFor() == 0);
+        } catch (Exception e) {
+            return false;
+        }
 
 
     }
