@@ -106,11 +106,12 @@ public class HttpRequest {
                 return false;
             }
 
+
     }
 
 
-    public static void snackBarError(Activity act, View view, String msg) {
-        final Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+    public void snackBarError(Activity act, View views, String msg) {
+        final Snackbar snackbar = Snackbar.make(views, msg, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(act.getResources().getColor(android.R.color.holo_red_dark));
         try {
             snackbar.show();
@@ -119,8 +120,8 @@ public class HttpRequest {
     }
 
 
-    public static void snackBarSuccess(Activity act, View view, String msg) {
-        final Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+    public void snackBarSuccess(Activity act, View views, String msg) {
+        final Snackbar snackbar = Snackbar.make(views, msg, Snackbar.LENGTH_SHORT);
         snackbar.setBackgroundTint(act.getResources().getColor(android.R.color.holo_green_light));
         try {
             snackbar.show();
