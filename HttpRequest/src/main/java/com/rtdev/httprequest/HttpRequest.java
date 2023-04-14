@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.View;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.IOException;
 
@@ -107,4 +109,22 @@ public class HttpRequest {
     }
 
 
+    public static void snackBarError(Activity act, View view, String msg) {
+        final Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(act.getResources().getColor(android.R.color.holo_red_dark));
+        try {
+            snackbar.show();
+        } catch (Exception e) {
+        }
+    }
+
+
+    public static void snackBarSuccess(Activity act, View view, String msg) {
+        final Snackbar snackbar = Snackbar.make(view, msg, Snackbar.LENGTH_SHORT);
+        snackbar.setBackgroundTint(act.getResources().getColor(android.R.color.holo_green_light));
+        try {
+            snackbar.show();
+        } catch (Exception e) {
+        }
+    }
 }
