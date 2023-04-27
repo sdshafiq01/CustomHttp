@@ -105,6 +105,46 @@ public class HttpRequest {
 
         return strJson;
     }
+    // TODO: without pass parameter for call to specific data
+    public String CallForData(String url) {
+        this.URL = url;
+
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        if (isConnect()) {
+            Request request = new Request.Builder()
+                    .header("User-Agent",
+                            context.getString(
+                                    R.string.agent
+                            )
+                    )
+                    .url(URL).build();
+            try {
+                response = mClient.newCall(request).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+                strJson = "failed";
+            }
+
+            if (response != null && response.isSuccessful()) {
+                try {
+                    strJson = response.body().string();
+                    Log.e(TAG, "requested body : " + strJson);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    strJson = "failed";
+                }
+            } else {
+                strJson = "failed";
+            }
+        } else {
+            strJson = "network error";
+        }
+
+        return strJson;
+    }
 
     private boolean isConnect() {
         try {
